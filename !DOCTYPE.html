@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahul Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('https://wallpapercave.com/wp/wp5593679.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        #loginForm {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        button {
+            background-color: #FF5733;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #FF4500;
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Logout button position */
+        .logout-position {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <center><button onclick="checkCredentials()">Submit</button></center>
+    </div>
+
+    <div id="content" class="hidden">
+        <h1 style="color: #FFEB3B;">Welcome, Priya.!</h1>
+        <p style="color: #e0e0e0;">hi</p>
+        <center><button style="background-color:transparent;font-size:40px; padding:10px;" onclick="openLink()">🎁</button></center>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script>
+        let logoutButton;
+
+        // Check credentials on form submit
+        function checkCredentials() {
+            const inputPassword = document.getElementById('password').value;
+            const correctHashedPassword = CryptoJS.SHA256("Ammu").toString();
+            const hashedPassword = CryptoJS.SHA256(inputPassword).toString();
+
+            if (hashedPassword === correctHashedPassword) {
+                document.getElementById('loginForm').style.display = 'none';
+                showContent();
+                addLogoutButton();
+            } else {
+                alert('Incorrect password!');
+            }
+
+            // Clear password field after submission
+            document.getElementById('password').value = '';
+        }
+
+        // Show content after login
+        function showContent() {
+            const content = document.getElementById('content');
+            content.classList.remove('hidden');
+            content.classList.add('fade-in');
+        }
+
+        // Open the link in a new tab
+        function openLink() {
+            window.open('https://photos.app.goo.gl/XP8D2z8SDv5nRWpw6', '_blank');
+        }
+
+        // Add logout button with emojis on top-right after login
+        function addLogoutButton() {
+            logoutButton = document.createElement('button');
+            logoutButton.textContent = '🏃🚪';
+            logoutButton.className = 'logout-position';
+            logoutButton.onclick = logout;
+            document.body.appendChild(logoutButton);
+        }
+
+        // Logout function
+        function logout() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('content').classList.add('hidden');
+            if (logoutButton) {
+                logoutButton.remove();
+            }
+        }
+    </script>
+</body>
+</html>
